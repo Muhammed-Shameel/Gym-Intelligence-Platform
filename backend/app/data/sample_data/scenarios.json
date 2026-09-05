@@ -1,0 +1,56 @@
+[
+  {
+    "id": "SCN-001",
+    "name": "Active member",
+    "member_code": "MEM-001",
+    "expected": {
+      "engagement": "Active",
+      "renewal_priority": "Low",
+      "trainer": "retain_current"
+    }
+  },
+  {
+    "id": "SCN-002",
+    "name": "High-risk renewal",
+    "member_code": "MEM-002",
+    "expected": {
+      "engagement": "High Risk",
+      "renewal_priority": "Urgent",
+      "next_action_due_hours": 24
+    }
+  },
+  {
+    "id": "SCN-003",
+    "name": "Insufficient history",
+    "member_code": "MEM-003",
+    "expected": {
+      "engagement": "Insufficient Data",
+      "next_action": "verify_records"
+    }
+  },
+  {
+    "id": "SCN-004",
+    "name": "Conflicting signals",
+    "member_code": "MEM-004",
+    "expected": {
+      "engagement": "Active or Watch",
+      "renewal_priority": "Urgent"
+    }
+  },
+  {
+    "id": "SCN-005",
+    "name": "Trainer review",
+    "member_code": "MEM-005",
+    "expected": {
+      "trainer_review": true
+    }
+  },
+  {
+    "id": "SCN-006",
+    "name": "Unknown member",
+    "member_code": "MEM-999",
+    "expected": {
+      "http_status": 404
+    }
+  }
+]

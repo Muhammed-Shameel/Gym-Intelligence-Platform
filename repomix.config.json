@@ -1,0 +1,16 @@
+{
+  "output": {
+    "filePath": "GFIP_latest_repomix.md",
+    "style": "markdown"
+  },
+  "ignore": {
+    "customPatterns": [
+      ".env",
+      ".venv/**",
+      "node_modules/**",
+      "dist/**",
+      "*.db",
+      "*.log"
+    ]
+  }
+}

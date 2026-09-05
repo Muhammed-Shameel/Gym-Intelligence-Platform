@@ -1,0 +1,7 @@
+trainer_code,full_name,skill_tags,max_active_members,active,current_load,available_slots
+TRN-001,Anil Kumar,strength|functional,20,true,15,2
+TRN-002,Neha Varma,mobility|functional,16,true,8,3
+TRN-003,Vivek Raj,general|strength,18,false,0,0
+TRN-004,Suresh Babu,cardio|strength,15,true,10,5
+TRN-005,Lakshmi Devi,yoga|mobility,20,true,5,10
+TRN-006,Rahul Gupta,functional|general,12,true,7,2

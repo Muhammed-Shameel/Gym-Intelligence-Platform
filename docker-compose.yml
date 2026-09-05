@@ -1,0 +1,22 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: sqlite:///./data/gfip.db
+      CORS_ORIGINS: http://localhost:8080
+    ports:
+      - "8000:8000"
+    volumes:
+      - gfip_data:/app/data
+      - ./GFIP_Phase1_Sample_Data_and_Test_Scenarios/GFIP_Phase1_Sample_Data_and_Test_Scenarios:/app/data/sample_data:ro
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: http://localhost:8000
+    ports:
+      - "8080:80"
+
+volumes:
+  gfip_data:

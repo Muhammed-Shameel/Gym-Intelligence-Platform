@@ -1,0 +1,17 @@
+### Health
+GET http://localhost:8000/health
+
+### Members
+GET http://localhost:8000/api/v1/members
+
+### Member
+GET http://localhost:8000/api/v1/members/MEM-002
+
+### Future Post #1.5 review endpoint
+POST http://localhost:8000/api/v1/reviews/member
+Content-Type: application/json
+
+{
+  "member_id": "MEM-002",
+  "review_reason": "renewal_review"
+}

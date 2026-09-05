@@ -1,0 +1,16 @@
+member_code,full_name,joined_on,status,preferred_training_tags
+MEM-001,Aarav Menon,2026-01-10,active,strength
+MEM-002,Diya Nair,2025-08-20,active,functional|mobility
+MEM-003,Kabir Thomas,2026-06-30,active,general
+MEM-004,Meera Joseph,2025-11-12,active,strength|functional
+MEM-005,Rohan Pillai,2025-10-01,active,mobility
+MEM-006,Sara Mathew,2026-02-05,paused,general
+MEM-007,Vikram Singh,2026-03-15,active,strength
+MEM-008,Priya Das,2025-12-01,active,yoga
+MEM-009,Arjun Varma,2026-04-20,active,functional
+MEM-010,Ananya Iyer,2026-05-10,active,cardio
+MEM-011,Ishaan Kulkarni,2026-01-25,active,strength|cardio
+MEM-012,Muhammed Kutti,2025-09-15,active,mobility
+MEM-013,Advik Reddy,2026-06-05,active,strength
+MEM-014,Saanvi Nair,2026-03-01,paused,general
+MEM-015,Rudra Shah,2026-02-14,active,functional|cardio

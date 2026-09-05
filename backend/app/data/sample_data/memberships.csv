@@ -1,0 +1,16 @@
+membership_id,member_code,plan_name,start_date,end_date,status,sessions_per_week_target
+MS-001,MEM-001,Annual,2026-01-10,2027-01-09,active,3
+MS-002,MEM-002,Annual,2025-07-25,2026-07-24,active,3
+MS-003,MEM-003,Monthly,2026-06-30,2026-07-29,active,2
+MS-004,MEM-004,Annual,2025-07-20,2026-07-20,active,4
+MS-005,MEM-005,Quarterly,2026-05-01,2026-07-31,active,2
+MS-006,MEM-006,Quarterly,2026-04-01,2026-06-30,expired,2
+MS-007,MEM-007,Annual,2026-03-15,2027-03-14,active,3
+MS-008,MEM-008,Annual,2025-12-01,2026-11-30,active,2
+MS-009,MEM-009,Annual,2026-04-20,2027-04-19,active,4
+MS-010,MEM-010,Monthly,2026-05-10,2026-06-09,active,3
+MS-011,MEM-011,Annual,2026-01-25,2027-01-24,active,4
+MS-012,MEM-012,Annual,2025-09-15,2026-09-14,active,2
+MS-013,MEM-013,Monthly,2026-06-05,2026-07-04,active,5
+MS-014,MEM-014,Quarterly,2026-03-01,2026-05-31,expired,2
+MS-015,MEM-015,Annual,2026-02-14,2027-02-13,active,3

@@ -1,0 +1,5 @@
+follow_up_id,member_code,activity_type,occurred_at,outcome,notes
+FU-001,MEM-001,in_person,2026-07-15T08:00:00,contacted,Routine engagement check
+FU-002,MEM-002,call,2026-06-28T12:00:00,no_response,Renewal reminder attempted
+FU-003,MEM-004,message,2026-07-16T10:00:00,contacted,Renewal discussion scheduled
+FU-004,MEM-005,call,2026-07-05T11:30:00,contacted,Attendance follow-up
