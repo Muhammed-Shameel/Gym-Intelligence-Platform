@@ -13,3 +13,17 @@ export type MemberListResponse = {
   items: Member[];
   total: number;
 };
+
+export type Trainer = {
+  id: string;
+  trainer_code: string;
+  full_name: string;
+  skill_tags: string[];
+  max_active_members: number;
+  active: boolean;
+};
+
+export type TrainerListResponse = {
+  items: Trainer[];
+  total: number;
+};

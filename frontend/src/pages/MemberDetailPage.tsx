@@ -16,62 +16,43 @@ export function MemberDetailPage({ memberId, onBack, onStartWorkflow }: { member
 
   return (
     <div>
-      <div style={{ marginBottom: '15px' }}>
-        <button 
-          onClick={onBack}
-          style={{ background: 'transparent', border: '1px solid #cbd5e1', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer', color: '#475569', fontWeight: '600', fontSize: '0.85rem' }}
-        >
-          Back to Dashboard
-        </button>
+      <div style={{ marginBottom: '20px' }}>
+        <button className="primary" onClick={onBack}>Back</button>
       </div>
 
       <section className="panel">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <div className="detail-header">
           <div>
-            <span className="eyebrow" style={{ color: '#2563eb' }}>Member Profile</span>
-            <h2 style={{ margin: '5px 0 0 0', fontSize: '1.6rem' }}>{member.full_name}</h2>
+            <h2 style={{ margin: '0 0 8px 0', fontSize: '2rem' }}>{member.full_name}</h2>
+            <div className="identity-row">
+                <span className="id-chip"><span className="chip-label">Section ID:</span> <span>{member.member_code}</span></span>
+                <span className={`status-badge ${member.status === 'active' ? 'active' : ''}`}>{member.status}</span>
+            </div>
           </div>
-          <span className={`status-badge ${member.status === 'active' ? 'active' : ''}`} style={{ fontSize: '0.85rem', padding: '4px 12px' }}>
-            {member.status}
-          </span>
+          <button className="primary" onClick={onStartWorkflow} style={{ padding: '0.75rem 1.5rem' }}>Run Agentic Workflow</button>
         </div>
 
-        <div className="kpi-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginBottom: '20px' }}>
-          <article>
-            <span>Member Code</span>
-            <strong style={{ fontFamily: 'monospace', color: '#1e293b' }}>{member.member_code}</strong>
-          </article>
-          <article>
-            <span>Email</span>
-            <strong style={{ fontSize: '1rem', color: '#334155' }}>{member.email || "N/A"}</strong>
-          </article>
-          <article>
-            <span>Joined Date</span>
-            <strong style={{ fontSize: '1rem', color: '#334155' }}>{member.joined_on ? new Date(member.joined_on).toLocaleDateString() : "N/A"}</strong>
-          </article>
+        <div className="detail-grid">
+            <div className="kpi-card" style={{ padding: '1.5rem' }}>
+                <span>Email</span>
+                <strong style={{ fontSize: '1.1rem' }}>{member.email || "N/A"}</strong>
+            </div>
+            <div className="kpi-card" style={{ padding: '1.5rem' }}>
+                <span>Joined Date</span>
+                <strong style={{ fontSize: '1.1rem' }}>{member.joined_on ? new Date(member.joined_on).toLocaleDateString() : "N/A"}</strong>
+            </div>
         </div>
 
-        <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '10px', border: '1px solid #e2e8f0', marginBottom: '20px' }}>
-          <h4 style={{ margin: '0 0 8px 0', color: '#334155', fontSize: '0.9rem' }}>Preferred Training Tags</h4>
+        <div style={{ marginTop: '2rem' }}>
+          <h4>Preferred Training Tags</h4>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {(member.preferred_training_tags || []).map((tag: string, i: number) => (
-              <span key={i} style={{ background: '#e0f2fe', color: '#0369a1', padding: '4px 10px', borderRadius: '12px', fontSize: '0.85rem', fontWeight: '600' }}>
-                {tag}
-              </span>
+              <span key={i} className="status-badge">{tag}</span>
             ))}
             {(!member.preferred_training_tags || member.preferred_training_tags.length === 0) && (
-              <span style={{ color: '#94a3b8', fontSize: '0.85rem' }}>No tags specified</span>
+              <span style={{ color: 'var(--text-muted)' }}>No tags specified</span>
             )}
           </div>
-        </div>
-
-        <div style={{ paddingTop: '15px', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'flex-end' }}>
-          <button 
-            onClick={onStartWorkflow} 
-            style={{ background: '#2563eb', color: 'white', padding: '10px 24px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem' }}
-          >
-            Run Agentic Workflow Console
-          </button>
         </div>
       </section>
     </div>

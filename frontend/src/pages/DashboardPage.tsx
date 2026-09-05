@@ -2,6 +2,97 @@ import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import type { Member } from "../types";
 
+type JoinTrendPoint = {
+  month: string;
+  label: string;
+  count: number;
+};
+
+function buildIntegerTicks(maxValue: number) {
+  const safeMax = Math.max(maxValue, 1);
+  const step = safeMax <= 5 ? 1 : Math.ceil(safeMax / 4);
+  const ticks: number[] = [];
+
+  for (let tick = 0; tick <= safeMax; tick += step) {
+    ticks.push(tick);
+  }
+
+  if (ticks[ticks.length - 1] !== safeMax) {
+    ticks.push(safeMax);
+  }
+
+  return ticks;
+}
+
+function MemberJoinTrendChart({ data }: { data: JoinTrendPoint[] }) {
+  if (data.length === 0) {
+    return <div className="empty-state">No join trend data available.</div>;
+  }
+
+  const maxCount = Math.max(...data.map((point) => point.count), 1);
+  const ticks = buildIntegerTicks(maxCount);
+  const width = 640;
+  const height = 228;
+  const margin = { top: 24, right: 18, bottom: 40, left: 42 };
+  const chartWidth = width - margin.left - margin.right;
+  const chartHeight = height - margin.top - margin.bottom;
+  const slotWidth = chartWidth / data.length;
+  const barWidth = Math.min(34, Math.max(12, slotWidth * 0.48));
+
+  return (
+    <div className="chart-frame" aria-label="Member join trend by month">
+      <svg className="join-trend-chart" viewBox={`0 0 ${width} ${height}`} role="img">
+        <title>Member Join Trends</title>
+        <desc>Monthly member joins scaled from zero to {maxCount} members.</desc>
+        {ticks.map((tick) => {
+          const y = margin.top + chartHeight - (tick / maxCount) * chartHeight;
+          return (
+            <g key={tick}>
+              <line
+                className="chart-grid-line"
+                x1={margin.left}
+                x2={width - margin.right}
+                y1={y}
+                y2={y}
+              />
+              <text className="chart-axis-label" x={margin.left - 12} y={y + 4} textAnchor="end">
+                {tick}
+              </text>
+            </g>
+          );
+        })}
+
+        {data.map((point, index) => {
+          const barHeight = (point.count / maxCount) * chartHeight;
+          const x = margin.left + index * slotWidth + (slotWidth - barWidth) / 2;
+          const y = margin.top + chartHeight - barHeight;
+
+          return (
+            <g key={point.month} className="chart-bar-group">
+              <rect
+                className="chart-bar"
+                x={x}
+                y={y}
+                width={barWidth}
+                height={Math.max(barHeight, 2)}
+                rx="5"
+              >
+                <title>{`${point.month}: ${point.count} member${point.count === 1 ? "" : "s"}`}</title>
+              </rect>
+              <text className="chart-value-label" x={x + barWidth / 2} y={Math.max(y - 8, 12)} textAnchor="middle">
+                {point.count}
+              </text>
+              <text className="chart-month-label" x={x + barWidth / 2} y={height - 14} textAnchor="middle">
+                {point.label}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 export function DashboardPage({ onMemberSelect, onViewAll }: { onMemberSelect: (id: string) => void, onViewAll: () => void }) {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +114,11 @@ export function DashboardPage({ onMemberSelect, onViewAll }: { onMemberSelect: (
     return acc;
   }, {});
   const sortedMonths = Object.keys(monthlyJoinCounts).sort();
-  const maxCount = Math.max(...Object.values(monthlyJoinCounts), 1);
+  const joinTrendData = sortedMonths.map((month) => ({
+    month,
+    label: month.split('-')[1],
+    count: monthlyJoinCounts[month],
+  }));
 
   return (
     <>
@@ -47,20 +142,10 @@ export function DashboardPage({ onMemberSelect, onViewAll }: { onMemberSelect: (
         </article>
       </section>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+      <div className="analytics-grid">
         <section className="panel">
           <h2>Member Join Trends</h2>
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-end', height: '140px', paddingBottom: '20px' }}>
-            {sortedMonths.map(month => {
-              const height = (monthlyJoinCounts[month] / maxCount) * 100;
-              return (
-                <div key={month} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                  <div style={{ width: '100%', background: 'var(--primary)', height: `${height}%`, minHeight: '8px', borderRadius: '4px' }} title={`${month}: ${monthlyJoinCounts[month]}`}></div>
-                  <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{month.split('-')[1]}</span>
-                </div>
-              );
-            })}
-          </div>
+          <MemberJoinTrendChart data={joinTrendData} />
         </section>
         <section className="panel">
           <h2>Popular Training Tags</h2>
@@ -86,7 +171,7 @@ export function DashboardPage({ onMemberSelect, onViewAll }: { onMemberSelect: (
           <button className="primary" onClick={onViewAll}>View All</button>
         </div>
         {loading ? <p>Loading...</p> : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+            <div className="activity-grid">
             {members.slice(0, 6).map((member) => (
                 <div key={member.id} className="kpi-card" onClick={() => onMemberSelect(member.id)} style={{ cursor: 'pointer', padding: '1rem' }}>
                     <span className="eyebrow" style={{fontSize: '0.6rem'}}>{member.member_code}</span>

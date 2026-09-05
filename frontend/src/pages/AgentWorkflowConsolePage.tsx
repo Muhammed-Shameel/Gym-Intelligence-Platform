@@ -3,6 +3,23 @@ import { api } from "../api/client";
 
 type WorkflowMode = "deterministic" | "langgraph" | "llm_assisted";
 
+function parseRecommendationItems(recommendation?: string | null) {
+  if (!recommendation) return [];
+  return recommendation
+    .split("|")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function parseNarrativeParagraphs(text?: string | null) {
+  if (!text) return [];
+  return text
+    .replace(/\s+/g, " ")
+    .split(/(?<=[.!?])\s+(?=[A-Z(])/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 function RouteInfo({ data }: { data: any }) {
   if (!data || (data.graph_mode !== "langgraph_stateless" && data.graph_mode !== "langgraph_llm_assisted")) return null;
 
@@ -119,15 +136,17 @@ export function AgentWorkflowConsolePage({ memberId }: { memberId: string }) {
   const confidenceClassName = validationPassed || mode !== "llm_assisted"
     ? "confidence-badge"
     : "confidence-badge review";
+  const recommendationItems = parseRecommendationItems(data.final_recommendation);
+  const explanationParagraphs = parseNarrativeParagraphs(data.explanation || context.explanation);
 
   return (
     <div className="workflow-console">
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
+      <div className="workflow-header">
         <section className="hero-card" style={{margin: 0, flex: 1}}>
           <h1 style={{ fontSize: '1.5rem', margin: '0 0 4px 0' }}>
             Workflow Console
           </h1>
-          <p className="eyebrow" style={{ color: '#64748b' }}>Session ID: {data.workflow_session_id || data.workflow_id}</p>
+          <p className="session-id-chip"><span className="chip-label">Section ID:</span> <span>{data.workflow_session_id || data.workflow_id || "N/A"}</span></p>
         </section>
         <div style={{display: 'flex', gap: '12px', alignItems: 'center'}}>
           <button className="status-badge" style={{cursor: 'pointer', border: 'none', padding: '8px 16px', background: isAdmin ? '#16a34a' : '#e2e8f0', color: isAdmin ? '#fff' : '#334155'}} onClick={isAdmin ? () => setShowDebug(!showDebug) : promptAdmin}>
@@ -197,14 +216,43 @@ export function AgentWorkflowConsolePage({ memberId }: { memberId: string }) {
         </section>
       )}
 
-      <section className="insight-card" style={{ marginTop: '15px' }}>
-        <span className={confidenceClassName}>{confidenceLabel}</span>
-        <h2 style={{ fontSize: '1.2rem', margin: '0 0 8px 0', color: '#0369a1' }}>Final Decision Support</h2>
-        <p style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '12px', color: '#0f172a' }}>
-            {data.final_recommendation || "N/A"}
-        </p>
-        <p style={{marginBottom: '8px', color: '#334155', lineHeight: '1.5'}}><strong>Explanation:</strong> <em>{data.explanation || context.explanation || "No explanation provided."}</em></p>
-        <p style={{fontSize: '0.8rem', color: '#64748b', margin: 0}}><strong>Audit Reference:</strong> {data.audit_reference || "N/A"}</p>
+      <section className="insight-card">
+        <div className="insight-header">
+          <div>
+            <span className={confidenceClassName}>{confidenceLabel}</span>
+            <h2>Final Decision Support</h2>
+          </div>
+          <span className="output-source-badge">Decision Summary</span>
+        </div>
+
+        <div className="decision-block">
+          <span className="decision-label">Recommended actions</span>
+          {recommendationItems.length > 0 ? (
+            <ul className="recommendation-list">
+              {recommendationItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="empty-copy">No recommendation returned.</p>
+          )}
+        </div>
+
+        <div className="explanation-block">
+          <span className="decision-label">Explanation</span>
+          {explanationParagraphs.length > 0 ? (
+            explanationParagraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))
+          ) : (
+            <p className="empty-copy">No explanation provided.</p>
+          )}
+        </div>
+
+        <div className="audit-row">
+          <span>Audit Reference</span>
+          <code>{data.audit_reference || "N/A"}</code>
+        </div>
       </section>
     </div>
   );
