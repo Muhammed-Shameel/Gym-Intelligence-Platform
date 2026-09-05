@@ -4,10 +4,16 @@ from app.core.database import get_db
 from app.services.context.builder import ContextBuilder
 from app.services.orchestrators.base import OrchestrationService
 from app.models.domain import WorkflowSession, DecisionRecord, Member
+from app.data.sync import sync_data
 from uuid import uuid4
 from datetime import datetime
 
 router = APIRouter(prefix="/api/v1", tags=["Workflow & Audit"])
+
+@router.post("/sync")
+def trigger_sync():
+    sync_data()
+    return {"message": "Database synchronization initiated."}
 
 from app.services.orchestrators.graph import create_graph
 from app.services.orchestrators.state import GFIPGraphState

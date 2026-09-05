@@ -1,12 +1,12 @@
 # Gym & Fitness Intelligence Platform (GFIP)
 
-GFIP is a Phase 1 agentic AI application for gym member engagement, retention monitoring, trainer allocation, follow-up review, and auditable decision support.
+GFIP is a agentic AI application for gym member engagement, retention monitoring, trainer allocation, follow-up review, and auditable decision support.
 
 The project includes a FastAPI backend, SQLAlchemy domain models, deterministic rule agents, LangGraph orchestration, controlled LLM-assisted summary generation, and a polished React dashboard/workflow console.
 
 ## Current Status
 
-Production-ready Phase 1 demo foundation.
+Production-ready foundation.
 
 Included:
 
